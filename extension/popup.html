@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Accessibility Tools</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 10px;
+        width: 200px;
+      }
+      label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Accessibility</h3>
+    <label>
+      High Contrast
+      <input type="checkbox" id="toggleContrast" />
+    </label>
+    <label>
+      Dyslexia Font
+      <input type="checkbox" id="toggleDyslexia" />
+    </label>
+    <label>
+      Cataract Vision
+      <input type="checkbox" id="toggleCataract" />
+    </label>
+    <label>
+      Color Blind Mode
+      <select id="cbMode">
+        <option value="normal">Normal</option>
+        <option value="protanopia">Protanopia</option>
+        <option value="deuteranopia">Deuteranopia</option>
+        <option value="tritanopia">Tritanopia</option>
+      </select>
+    </label>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
