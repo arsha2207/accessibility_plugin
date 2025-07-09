@@ -1,36 +1,38 @@
 function parseRgb(str) {
   const vals = str.match(/\d+/g);
-  return vals ? vals.slice(0, 3).map(Number) : null;
+  if (!vals || vals.length < 3) return null;
+  return vals.slice(0, 3).map(Number);
 }
 
 function daltonize(r, g, b, type) {
-  const L = 17.8824 * r + 43.5161 * g + 4.11935 * b;
-  const M = 3.45565 * r + 27.1554 * g + 3.86714 * b;
-  const S = 0.0299566 * r + 0.184309 * g + 1.46709 * b;
+  // Convert to LMS space
+  const L = 0.299 * r + 0.587 * g + 0.114 * b;
+  const M = 0.3 * r + 0.59 * g + 0.11 * b;
+  const S = 0.01 * r + 0.05 * g + 0.94 * b;
 
-  let l = L,
-    m = M,
-    s = S;
+  let L_blind = L,
+    M_blind = M,
+    S_blind = S;
 
-  if (type === "protanopia") {
-    l = 0.0 * L + 0.23 * M - 2.53 * S;
-  } else if (type === "deuteranopia") {
-    m = 0.494 * L + 0.0 * M + 1.25 * S;
-  } else if (type === "tritanopia") {
-    s = -0.396 * L + 0.801 * M + 0.0 * S;
-  }
+  // Simulate CVD (desaturate affected cone)
+  if (type === "protanopia") L_blind = 0;
+  else if (type === "deuteranopia") M_blind = 0;
+  else if (type === "tritanopia") S_blind = 0;
 
-  const R_sim = 0.0809 * l - 0.1305 * m + 0.1167 * s;
-  const G_sim = -0.0102 * l + 0.054 * m - 0.1136 * s;
-  const B_sim = -0.0004 * l - 0.0041 * m + 0.6935 * s;
+  // Back to RGB
+  const r_blind = 1.0 * L_blind + 0.0 * M_blind + 0.0 * S_blind;
+  const g_blind = 0.0 * L_blind + 1.0 * M_blind + 0.0 * S_blind;
+  const b_blind = 0.0 * L_blind + 0.0 * M_blind + 1.0 * S_blind;
 
-  const errR = r - R_sim;
-  const errG = g - G_sim;
-  const errB = b - B_sim;
+  // Error between normal and simulated
+  const errR = r - r_blind;
+  const errG = g - g_blind;
+  const errB = b - b_blind;
 
-  const R = Math.min(255, Math.max(0, r + 0.7 * errR));
-  const G = Math.min(255, Math.max(0, g + 0.7 * errG));
-  const B = Math.min(255, Math.max(0, b + 0.7 * errB));
+  // Corrected color
+  const R = Math.min(255, Math.max(0, r + 2 * errR));
+  const G = Math.min(255, Math.max(0, g + 2 * errG));
+  const B = Math.min(255, Math.max(0, b + 2 * errB));
 
   return [Math.round(R), Math.round(G), Math.round(B)];
 }
@@ -44,6 +46,8 @@ function luminance(r, g, b) {
 }
 
 function contrastRatio(rgb1, rgb2) {
+  if (!rgb1 || !rgb2) return 0; // prevent crash on invalid values
+
   const lum1 = luminance(...rgb1);
   const lum2 = luminance(...rgb2);
   const brightest = Math.max(lum1, lum2);
@@ -100,6 +104,14 @@ function updateColors(mode) {
     });
 
     // Apply best readable text color if contrast is too low
+    if (contrastRatio(backgroundColor, textColor) < 4.5) {
+      el.style.setProperty(
+        "color",
+        getBestContrastTextColor(backgroundColor),
+        "important"
+      );
+    }
+
     if (mode !== "normal" && backgroundColor && textColor) {
       const ratio = contrastRatio(backgroundColor, textColor);
       if (ratio < 4.5) {
