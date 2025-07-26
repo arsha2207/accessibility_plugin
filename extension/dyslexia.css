@@ -1,0 +1,21 @@
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("fonts/OpenDyslexic-Bold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body,
+p,
+div,
+span,
+input,
+textarea,
+select,
+button,
+a {
+  font-family: "OpenDyslexic", Arial, sans-serif !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.6 !important;
+}

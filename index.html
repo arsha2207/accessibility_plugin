@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>High Contrast Mode Demo</title>
+    <style>
+      :root {
+        --bg-color: #ffffff;
+        --text-color: #000000;
+        --success-color: #00ff00;
+        --error-color: #ff0000;
+        --info-color: #ffff00;
+        --disabled-color: #cccccc;
+        --button-green: #28a745;
+        --button-red: #dc3545;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: sans-serif;
+        padding: 20px;
+      }
+
+      .alert {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+
+      .alert.success {
+        background-color: var(--success-color);
+        color: #000;
+      }
+
+      .alert.error {
+        background-color: var(--error-color);
+        color: #fff;
+      }
+
+      .alert.info {
+        background-color: var(--info-color);
+        color: #000;
+      }
+
+      button.success {
+        background-color: var(--button-green);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+
+      button.danger {
+        background-color: var(--button-red);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+      }
+
+      .disabled-text {
+        color: var(--disabled-color);
+        font-style: italic;
+      }
+
+      /* 👇 High Contrast Mode Overrides */
+      .high-contrast {
+        background-color: #000 !important;
+        color: #fff !important;
+      }
+
+      .high-contrast .alert.success {
+        background-color: #000 !important;
+        color: #0f0 !important;
+        border: 2px solid #0f0;
+      }
+
+      .high-contrast .alert.error {
+        background-color: #000 !important;
+        color: #f00 !important;
+        border: 2px solid #f00;
+      }
+
+      .high-contrast .alert.info {
+        background-color: #000 !important;
+        color: #ff0 !important;
+        border: 2px solid #ff0;
+      }
+
+      .high-contrast button {
+        background-color: #000 !important;
+        color: #fff !important;
+        border: 2px solid #fff !important;
+      }
+
+      .high-contrast .disabled-text {
+        color: #888 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Accessibility Demo: Toggle High Contrast</h1>
+    <p>
+      This demo shows how a high contrast mode can improve readability for users
+      with visual impairments.
+    </p>
+
+    <div class="alert success">Success: Settings saved</div>
+    <div class="alert error">Error: Failed to load data</div>
+    <div class="alert info">Info: This is a warning message</div>
+
+    <p>
+      <button class="success">Confirm</button>
+      <button class="danger">Delete</button>
+    </p>
+
+    <p class="disabled-text">This is some disabled or less important text.</p>
+
+    <!-- 👇 High Contrast Toggle Script -->
+    <script src="accessible-colorblind.js"></script>
+  </body>
+</html>

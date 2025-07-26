@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Accesibility",
+  "version": "1.0",
+  "description": "Applies a theme to websites for better accessibility.",
+  "permissions": ["scripting", "activeTab", "storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "content_scripts": [],
+  "web_accessible_resources": [
+    {
+      "resources": ["style.css", "dyslexia.css","cataract.css","colorblind.js","fonts/OpenDyslexic-Bold.woff"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
